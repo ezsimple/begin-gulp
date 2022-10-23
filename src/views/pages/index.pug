@@ -1,0 +1,23 @@
+extends ../../templates/layout.pug
+
+block header
+  .container
+    h1 Static site with gulp build system
+    //- style.
+    //-   div.box {
+    //-     width: 100%;
+    //-     border: 1px;
+    //-     border-color: #000;
+    //-   }
+
+block main
+  .container
+    img(src='/images/umbrella.png', art='gulp-logo')
+    div(class='box') 박스 css가 먹은건가?
+    p 왜? 글자색이 핑크로 바뀌어야 하는데
+
+block footer
+  .container
+    p Footer
+
+block javascript
