@@ -1,0 +1,26 @@
+{
+  "name": "begin-gulp",
+  "version": "1.0.0",
+  "description": "gulp 초보자",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "gulp",
+    "dev": "gulp",
+    "clean": "gulp clean",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
+    "@babel/register": "^7.18.9",
+    "gulp": "^4.0.2",
+    "gulp-pug": "^5.0.0",
+    "gulp-webserver": "^0.9.1"
+  },
+  "dependencies": {
+    "del": "^7.0.0"
+  }
+}
