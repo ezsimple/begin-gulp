@@ -9,8 +9,14 @@ import miniCSS from 'gulp-csso';
 import bro from 'gulp-bro';
 import babelify from 'babelify';
 import ghPages from 'gulp-gh-pages';
+import gulpif from 'gulp-if';
 
 const sass = require('gulp-sass')(require('node-sass'));
+
+const isProduction = false;
+const uglifyFlag = isProduction ? true : false;
+const prettyFlag = isProduction ? false : true;
+const minifyFlag = isProduction ? true : false;
 
 const routes = {
   pug: {
@@ -29,7 +35,7 @@ const routes = {
   },
   js: {
     watch: 'src/js/**/*.js',
-    src: 'src/js/main.js',
+    src: 'src/js/**/*.js',
     dest: 'build/js',
   },
 };
@@ -46,24 +52,31 @@ const styles = () =>
         overrideBrowserslist: ['last 2 versions'],
       })
     )
-    .pipe(miniCSS())
+    .pipe(gulpif(minifyFlag, miniCSS()))
     .pipe(gulp.dest(routes.scss.dest));
 
 const js = () =>
   gulp
     .src(routes.js.src)
     .pipe(
-      bro({
-        transform: [
-          babelify.configure({ presets: ['@babel/preset-env'] }),
-          ['uglifyify', { global: true }],
-        ],
-      })
+      gulpif(
+        uglifyFlag,
+        bro({
+          transform: [
+            babelify.configure({ presets: ['@babel/preset-env'] }),
+            ['uglifyify', { global: true }],
+          ],
+        })
+      )
     )
     .pipe(gulp.dest(routes.js.dest));
 
 const pug = () =>
-  gulp.src(routes.pug.src).pipe(gpug()).pipe(gulp.dest(routes.pug.dest));
+  gulp
+    .src(routes.pug.src)
+    .pipe(gpug())
+    // .pipe(gulpif(prettyFlag, pug({ pretty: prettyFlag })))
+    .pipe(gulp.dest(routes.pug.dest));
 
 const clean = () => del(['build/', '.publish']);
 
