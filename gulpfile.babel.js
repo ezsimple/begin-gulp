@@ -11,14 +11,15 @@ import babelify from 'babelify';
 import ghPages from 'gulp-gh-pages';
 import gulpif from 'gulp-if';
 import browserSync from 'browser-sync';
+import cssbeautify from 'gulp-cssbeautify';
 
 const sass = require('gulp-sass')(require('node-sass'));
 
 const isDevelopment =
   !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
-const uglifyFlag = isDevelopment ? false : true;
-const prettyFlag = isDevelopment ? true : false;
-const minifyFlag = isDevelopment ? false : true;
+const jsUglifyFlag = isDevelopment ? false : true;
+const htmlPrettyFlag = isDevelopment ? true : false;
+const cssMinifyFlag = isDevelopment ? false : true;
 
 const routes = {
   pug: {
@@ -58,7 +59,8 @@ const styles = () =>
         overrideBrowserslist: ['last 2 versions'],
       })
     )
-    .pipe(gulpif(minifyFlag, miniCSS()))
+    .pipe(gulpif(cssMinifyFlag, miniCSS()))
+    .pipe(gulpif(!cssMinifyFlag, cssbeautify()))
     .pipe(gulp.dest(routes.scss.dest))
     .pipe(browserSync.reload({ stream: true }));
 
@@ -67,7 +69,7 @@ const js = () =>
     .src(routes.js.src)
     .pipe(
       gulpif(
-        uglifyFlag,
+        jsUglifyFlag,
         bro({
           transform: [
             babelify.configure({ presets: ['@babel/preset-env'] }),
@@ -84,9 +86,9 @@ const pug = () =>
     .src(routes.pug.src)
     .pipe(
       gpug(
-        gulpif(prettyFlag, {
+        gulpif(htmlPrettyFlag, {
           locals: {},
-          pretty: prettyFlag,
+          pretty: htmlPrettyFlag,
         })
       )
     )
