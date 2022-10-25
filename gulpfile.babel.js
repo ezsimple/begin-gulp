@@ -12,6 +12,7 @@ import ghPages from 'gulp-gh-pages';
 import gulpif from 'gulp-if';
 import browserSync from 'browser-sync';
 import cssbeautify from 'gulp-cssbeautify';
+import beautify from 'gulp-jsbeautifier';
 
 const sass = require('gulp-sass')(require('node-sass'));
 
@@ -68,16 +69,14 @@ const js = () =>
   gulp
     .src(routes.js.src)
     .pipe(
-      gulpif(
-        jsUglifyFlag,
-        bro({
-          transform: [
-            babelify.configure({ presets: ['@babel/preset-env'] }),
-            ['uglifyify', { global: true }],
-          ],
-        })
-      )
+      bro({
+        transform: [
+          babelify.configure({ presets: ['@babel/preset-env'] }),
+          ['uglifyify', { global: jsUglifyFlag }],
+        ],
+      })
     )
+    .pipe(gulpif(!jsUglifyFlag, beautify()))
     .pipe(gulp.dest(routes.js.dest))
     .pipe(browserSync.reload({ stream: true }));
 
