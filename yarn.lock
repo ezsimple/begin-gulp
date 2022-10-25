@@ -2414,13 +2414,6 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-cjs@^0.0.11:
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/cjs/-/cjs-0.0.11.tgz#1fe528ebda8f9ee21f81a7f7b299a8d70b14a47c"
-  integrity sha512-aLndk8BnpIOy/ZxmLGCNTSFoLm0+OyZDtxNCV6jUBHBkLICanUAlkIGtnaQrCBMYTebOmWHNg8+vxtaYZ8LSfA==
-  dependencies:
-    sync-channel "*"
-
 class-utils@^0.3.5:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/class-utils/-/class-utils-0.3.6.tgz#f93369ae8b9a7ce02fd41faad0ca83033190c463"
@@ -9376,11 +9369,6 @@ symbol-observable@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.1.tgz#8340fc4702c3122df5d22288f88283f513d3fdd4"
   integrity sha512-Kb3PrPYz4HanVF1LVGuAdW6LoVgIwjUYJGzFe7NDrBLCN4lsV/5J0MFurV+ygS4bRVwrCEt2c7MQ1R2a72oJDw==
-
-sync-channel@*:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/sync-channel/-/sync-channel-0.0.6.tgz#0bad830d8f1f11b8ce612549e0d9637bb0652850"
-  integrity sha512-rjHHukZeQW3hGgwMuOkrITv1e87nxuAKRGgwPNtCmS3Az+YdO826hBy1IDjRsTXKGc2WDWUaDU5Zx8uodXWwgg==
 
 syntax-error@^1.1.1:
   version "1.4.0"
