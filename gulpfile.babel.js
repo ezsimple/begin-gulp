@@ -10,18 +10,20 @@ import bro from 'gulp-bro';
 import babelify from 'babelify';
 import ghPages from 'gulp-gh-pages';
 import gulpif from 'gulp-if';
+import browserSync from 'browser-sync';
 
 const sass = require('gulp-sass')(require('node-sass'));
 
-const isProduction = false;
-const uglifyFlag = isProduction ? true : false;
-const prettyFlag = isProduction ? false : true;
-const minifyFlag = isProduction ? true : false;
+const isDevelopment =
+  !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+const uglifyFlag = isDevelopment ? false : true;
+const prettyFlag = isDevelopment ? true : false;
+const minifyFlag = isDevelopment ? false : true;
 
 const routes = {
   pug: {
     watch: 'src/**/*.pug',
-    src: 'src/*.pug',
+    src: 'src/**/*.pug',
     dest: 'build',
   },
   img: {
@@ -41,7 +43,11 @@ const routes = {
 };
 
 const img = () =>
-  gulp.src(routes.img.src).pipe(image()).pipe(gulp.dest(routes.img.dest));
+  gulp
+    .src(routes.img.src)
+    .pipe(image())
+    .pipe(gulp.dest(routes.img.dest))
+    .pipe(browserSync.reload({ stream: true }));
 
 const styles = () =>
   gulp
@@ -53,7 +59,8 @@ const styles = () =>
       })
     )
     .pipe(gulpif(minifyFlag, miniCSS()))
-    .pipe(gulp.dest(routes.scss.dest));
+    .pipe(gulp.dest(routes.scss.dest))
+    .pipe(browserSync.reload({ stream: true }));
 
 const js = () =>
   gulp
@@ -69,19 +76,27 @@ const js = () =>
         })
       )
     )
-    .pipe(gulp.dest(routes.js.dest));
+    .pipe(gulp.dest(routes.js.dest))
+    .pipe(browserSync.reload({ stream: true }));
 
 const pug = () =>
   gulp
     .src(routes.pug.src)
-    .pipe(gpug())
-    // .pipe(gulpif(prettyFlag, pug({ pretty: prettyFlag })))
-    .pipe(gulp.dest(routes.pug.dest));
+    .pipe(
+      gpug(
+        gulpif(prettyFlag, {
+          locals: {},
+          pretty: prettyFlag,
+        })
+      )
+    )
+    .pipe(gulp.dest(routes.pug.dest))
+    .pipe(browserSync.reload({ stream: true }));
 
 const clean = () => del(['build/', '.publish']);
 
-const webServer = () =>
-  gulp.src(routes.pug.dest).pipe(ws({ livereload: true, open: true }));
+// const webServer = () =>
+//   gulp.src(routes.pug.dest).pipe(ws({ livereload: true, open: true }));
 
 const watch = () => {
   gulp.watch(routes.pug.watch, pug);
@@ -90,13 +105,22 @@ const watch = () => {
   gulp.watch(routes.js.watch, js);
 };
 
+const broSync = () => {
+  browserSync({
+    server: {
+      baseDir: routes.pug.dest,
+    },
+    notify: false,
+    browser: true,
+    open: true,
+  });
+};
+
 const gh = () => gulp.src('build/**/*').pipe(ghPages());
 
 const prepare = gulp.series([clean, img]);
-
 const assets = gulp.series([pug, styles, js]);
-
-const live = gulp.parallel([webServer, watch]);
+const live = gulp.parallel([/*webServer,*/ watch, broSync]);
 
 export const build = gulp.series([prepare, assets]);
 export const dev = gulp.series([build, live]);
