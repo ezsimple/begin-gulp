@@ -72,7 +72,7 @@ const js = () =>
       bro({
         transform: [
           babelify.configure({ presets: ['@babel/preset-env'] }),
-          ['uglifyify', { global: jsUglifyFlag }],
+          ['uglifyify', { global: true }],
         ],
       })
     )
