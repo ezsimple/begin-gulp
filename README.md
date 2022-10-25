@@ -5,14 +5,31 @@
 1. CSS Layout 작업을 위한 Start Kit 제작
 2. 배포 방법 확인
 
-## 설치
+## 개발환경
+
+주의) node-sass가 v14까지 지원하고 있음.
 
 ```
-yarn
+nvm install v14
+nvm use v14
+cd begin-gulp
+yarn install
 ```
 
-## 실행
+## build 실행.
+
+```
+yarn build
+```
+
+## 개발모드 실행.
 
 ```
 yarn dev
+```
+
+## github pages 배포.
+
+```
+yarn deploy
 ```
