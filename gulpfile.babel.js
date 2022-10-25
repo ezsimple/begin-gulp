@@ -114,7 +114,7 @@ const broSync = () => {
     },
     notify: false,
     browser: true,
-    open: true,
+    open: false,
   });
 };
 
