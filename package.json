@@ -18,6 +18,7 @@
     "del": "4.1.1",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^8.0.0",
+    "gulp-babel": "^8.0.0",
     "gulp-bro": "^2.0.0",
     "gulp-cssbeautify": "^3.0.1",
     "gulp-csso": "^4.0.1",

@@ -13,6 +13,7 @@ import gulpif from 'gulp-if';
 import browserSync from 'browser-sync';
 import cssbeautify from 'gulp-cssbeautify';
 import beautify from 'gulp-jsbeautifier';
+import babel from 'gulp-babel';
 
 const sass = require('gulp-sass')(require('node-sass'));
 
@@ -69,13 +70,17 @@ const js = () =>
   gulp
     .src(routes.js.src)
     .pipe(
-      bro({
-        transform: [
-          babelify.configure({ presets: ['@babel/preset-env'] }),
-          ['uglifyify', { global: true }],
-        ],
-      })
+      gulpif(
+        jsUglifyFlag,
+        bro({
+          transform: [
+            babelify.configure({ presets: ['@babel/preset-env'] }),
+            ['uglifyify', { global: true }],
+          ],
+        })
+      )
     )
+    .pipe(gulpif(!jsUglifyFlag, babel()))
     .pipe(gulpif(!jsUglifyFlag, beautify()))
     .pipe(gulp.dest(routes.js.dest))
     .pipe(browserSync.reload({ stream: true }));
